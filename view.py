@@ -1,14 +1,14 @@
 from flask import Blueprint, jsonify, request
-from chat import load_chat, load_new_chat
+from chat import load_chat
 import json
 import logging
 
 main_bp = Blueprint('main', __name__)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-@main_bp.route('/api/chat', methods=['POST'])
-def index():
-    # is_new_chat = is_new_chat == 'true'
+@main_bp.route('/api/chat/<is_new_chat>', methods=['POST'])
+def index(is_new_chat):
+    is_new_chat = is_new_chat == 'true'
     data = request.json
     response = {
         "data" : None,
@@ -16,7 +16,9 @@ def index():
     }
     statusCode = 404
     try:
-        conversation = load_new_chat()
+        address = request.headers['address']
+        logging.info(address)
+        conversation = load_chat(address, is_new_chat)
         message = data['message']
         output = conversation.predict(input=message)
         logging.info(output)

@@ -16,20 +16,19 @@ import json
 from cachetools import TTLCache
 
 
-# # load_dotenv()
-# load_dotenv(override=True, default_values={"CACHE_SIZE": "1000", "CACHE_TIME": "3600"})
 if not os.getenv("CACHE_SIZE"):
     os.environ["CACHE_SIZE"] = "1000"
 
 if not os.getenv("CACHE_TIME"):
     os.environ["CACHE_TIME"] = "3600"
     
-    
 openai.api_key = os.getenv("OPENAI_API_KEY")
 CACHE_SIZE, CACHE_TIME = int(os.getenv("CACHE_SIZE")), int(os.getenv("CACHE_TIME"))
 
 current_dir = os.path.dirname(__file__)
 cache = TTLCache(maxsize=CACHE_SIZE, ttl=CACHE_TIME)
+
+
 
 def load_instruction(filename):
     f = open(filename)
@@ -55,10 +54,7 @@ def load_new_chat():
 
     system_message_prompt.format_messages()
     human_template = """
-    You are a humam friend that involves in random human conversations. Your output should always just be JSON Response with the message field.
-    Your JSON response format should have the following keys:
-    message.if the user provides no input, you should prompt them to provide an input.
-
+    
     input = {input}
     """
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
