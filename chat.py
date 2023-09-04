@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 import openai
 from langchain.memory import ConversationBufferMemory
 from langchain.chat_models import ChatOpenAI
@@ -12,7 +11,6 @@ from langchain.prompts import (
 from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
-import json
 from cachetools import TTLCache
 
 
